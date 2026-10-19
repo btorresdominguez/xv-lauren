@@ -1,0 +1,260 @@
+<title>XV de Lauren</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&display=swap">
+<style>
+/* Layout: una sola tarjeta de papel acuarelado que se lee de arriba abajo; el formulario va dentro de la tarjeta */
+:root{
+  --paper:#f3efe2; --paper-2:#e9e3cf; --ink:#2b2f38; --blue:#5a7fa6; --blue-deep:#1f3f6e;
+  --blue-soft:#a9c0d8; --gold:#c9a24a; --line:rgba(90,127,166,.45); --field:#fffdf6; --error:#a23b3b;
+  --script:"Great Vibes","Brush Script MT",cursive;
+  --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#c8d7e6;color:var(--ink);font-family:var(--serif);
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px}
+.card{max-width:720px;margin:0 auto;position:relative;overflow:hidden;
+  background:
+    radial-gradient(circle at 12% 8%,rgba(169,192,216,.55),transparent 32%),
+    radial-gradient(circle at 92% 94%,rgba(169,192,216,.5),transparent 30%),
+    radial-gradient(circle at 85% 20%,rgba(201,162,74,.10),transparent 25%),
+    repeating-radial-gradient(circle at 30% 40%,rgba(0,0,0,.018) 0 1px,transparent 1px 3px),
+    linear-gradient(var(--paper),var(--paper-2));
+  border-radius:6px;box-shadow:0 18px 40px rgba(43,47,56,.18);
+  padding:clamp(36px,7vw,64px) clamp(20px,6vw,56px);text-align:center;
+  display:flex;flex-direction:column;gap:30px}
+.card::before,.card::after{content:"";position:absolute;left:8%;right:8%;height:7px;
+  border-radius:8px;background:linear-gradient(90deg,transparent,var(--blue-soft) 15%,var(--blue) 50%,var(--blue-soft) 85%,transparent);opacity:.8}
+.card::before{top:20px}.card::after{bottom:20px}
+.crown{width:84px;margin:0 auto;display:block}
+.eyebrow{font-size:clamp(20px,4vw,26px);letter-spacing:.32em;text-transform:uppercase;color:var(--blue);margin:0}
+h1{font-family:var(--script);font-weight:400;color:var(--blue);
+  font-size:clamp(68px,17vw,128px);line-height:.95;margin:0;text-wrap:balance}
+h1 .xv{display:block;font-size:.55em;color:var(--gold)}
+p{margin:0}
+.msg{font-size:clamp(19px,3.6vw,23px);line-height:1.5;max-width:56ch;margin:0 auto}
+.parents{font-style:italic;color:var(--blue);font-size:20px}
+.divider{width:min(320px,80%);margin:0 auto;display:block}
+.date{font-size:clamp(34px,7.5vw,48px);letter-spacing:.02em;
+  border-block:1.5px solid var(--line);padding-block:14px;width:fit-content;max-width:100%;margin:0 auto}
+.count{display:flex;justify-content:center;gap:clamp(10px,3vw,22px);flex-wrap:wrap}
+.count div{min-width:64px}
+.count b{display:block;font-size:34px;font-weight:600;color:var(--blue);font-variant-numeric:tabular-nums}
+.count span{font-size:13px;letter-spacing:.18em;text-transform:uppercase}
+.cta{display:inline-block;margin:0 auto;padding:18px 54px;border:2px solid #fff;border-radius:16px;
+  background:radial-gradient(ellipse at center,rgba(90,127,166,.55),rgba(169,192,216,.35));
+  color:var(--blue-deep);font-family:var(--serif);font-size:clamp(26px,5vw,34px);font-weight:600;letter-spacing:.06em;
+  text-decoration:none;box-shadow:0 6px 18px rgba(90,127,166,.35);cursor:pointer;transition:transform .2s,box-shadow .2s}
+.cta:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(90,127,166,.45)}
+.cta:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.cta[disabled]{opacity:.6;cursor:wait;transform:none}
+.note{font-size:18px}
+h2{font-style:italic;font-weight:600;color:var(--blue);font-size:30px;letter-spacing:.06em;margin:0}
+.info{display:flex;flex-direction:column;gap:6px;font-size:clamp(20px,4vw,26px)}
+.map{color:var(--blue);font-size:18px}
+.sign{font-family:var(--script);font-size:46px;color:var(--blue)}
+
+/* Formulario */
+#confirmar{scroll-margin-top:20px;display:flex;flex-direction:column;gap:22px}
+form{display:flex;flex-direction:column;gap:18px;text-align:left;
+  background:rgba(255,253,246,.55);border:1px solid var(--line);border-radius:10px;
+  padding:clamp(18px,4vw,28px)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:520px){.row{grid-template-columns:1fr}}
+label{display:flex;flex-direction:column;gap:6px;font-size:18px;font-weight:600;color:var(--blue-deep);min-width:0}
+label small{font-weight:400;color:var(--ink);font-size:15px}
+input,select{font:inherit;font-weight:400;font-size:18px;color:var(--ink);background:var(--field);
+  border:1px solid var(--blue-soft);border-radius:8px;padding:10px 12px;width:100%}
+fieldset{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+legend{font-size:18px;font-weight:600;color:var(--blue-deep);padding:0;margin-bottom:10px}
+.choice{flex-direction:row;align-items:center;gap:10px;font-weight:400;color:var(--ink)}
+.choice input{width:20px;height:20px;accent-color:var(--blue)}
+.guest{border-top:1px dashed var(--line);padding-top:14px;display:flex;flex-direction:column;gap:10px}
+.guest h3{margin:0;font-size:17px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+.err{color:var(--error);font-size:17px;min-height:1em;text-align:center}
+.thanks{background:rgba(255,253,246,.7);border:1px solid var(--line);border-radius:10px;padding:28px 20px;
+  display:flex;flex-direction:column;gap:10px}
+.thanks .big{font-family:var(--script);font-size:52px;color:var(--blue);line-height:1}
+.thanks p{font-size:20px}
+form .cta{align-self:center;font-size:clamp(22px,4.5vw,28px);padding:14px 40px}
+@media (prefers-reduced-motion:reduce){.cta{transition:none}html{scroll-behavior:auto}}
+</style>
+
+<main class="card">
+  <svg class="crown" viewBox="0 0 100 70" aria-hidden="true">
+    <path d="M10 58 L6 18 L30 38 L50 6 L70 38 L94 18 L90 58 Z" fill="none" stroke="#c9a24a" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M12 64 H88" stroke="#c9a24a" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="6" cy="16" r="4" fill="#c9a24a"/><circle cx="50" cy="5" r="4.5" fill="#c9a24a"/>
+    <circle cx="94" cy="16" r="4" fill="#c9a24a"/><circle cx="50" cy="44" r="5" fill="#5a7fa6"/>
+  </svg>
+
+  <p class="eyebrow">Mis XV años</p>
+  <h1>Lauren<span class="xv">quince años</span></h1>
+
+  <p class="msg">Hay momentos que se vuelven recuerdos para toda la vida, y quiero que este sea uno de ellos.<br>Con la bendición de Dios y el amor de mi familia, quiero celebrar mis quince años junto a quienes hacen parte de mi historia.</p>
+  <p class="parents">Con el cariño de mis padres, Carlos y Andrea</p>
+
+  <svg class="divider" viewBox="0 0 320 20" aria-hidden="true">
+    <path d="M10 10 H140 M180 10 H310" stroke="#5a7fa6" stroke-width="1.5"/>
+    <path d="M160 2 L168 10 L160 18 L152 10 Z" fill="#5a7fa6"/>
+    <circle cx="10" cy="10" r="3" fill="#a9c0d8"/><circle cx="310" cy="10" r="3" fill="#a9c0d8"/>
+  </svg>
+
+  <p class="date">12/12/26 | 7:00 p.m.</p>
+
+  <div class="count" aria-live="off">
+    <div><b id="d">–</b><span>días</span></div>
+    <div><b id="h">–</b><span>horas</span></div>
+    <div><b id="m">–</b><span>min</span></div>
+    <div><b id="s">–</b><span>seg</span></div>
+  </div>
+
+  <a class="cta" href="#confirmar">CONFIRMAR</a>
+
+  <svg class="divider" viewBox="0 0 320 20" aria-hidden="true">
+    <path d="M10 10 H140 M180 10 H310" stroke="#5a7fa6" stroke-width="1.5"/>
+    <path d="M160 2 L168 10 L160 18 L152 10 Z" fill="#5a7fa6"/>
+  </svg>
+
+  <h2>INFORMACIÓN</h2>
+  <div class="info">
+    <p><b>Salón de eventos Los Rosales</b></p>
+    <p>Calle 100 # 15-20, Bogotá</p>
+    <p><a class="map" href="https://www.google.com/maps/search/?api=1&query=Calle+100+%23+15-20%2C+Bogot%C3%A1" target="_blank" rel="noopener">Ver ubicación en el mapa</a></p>
+  </div>
+
+  <h2>CÓDIGO DE VESTIMENTA</h2>
+  <p class="info">Formal · Evita el color azul, es el color de la quinceañera</p>
+
+  <svg class="divider" viewBox="0 0 320 20" aria-hidden="true">
+    <path d="M10 10 H140 M180 10 H310" stroke="#5a7fa6" stroke-width="1.5"/>
+    <path d="M160 2 L168 10 L160 18 L152 10 Z" fill="#5a7fa6"/>
+  </svg>
+
+  <section id="confirmar">
+    <h2>CONFIRMA TU ASISTENCIA</h2>
+    <p class="note">Por favor responde antes del <b>1 de diciembre</b>.</p>
+
+    <form id="rsvp" novalidate>
+      <div class="row">
+        <label for="nombre">Nombre completo
+          <input id="nombre" name="nombre" autocomplete="name" required>
+        </label>
+        <label for="cedula">Cédula
+          <input id="cedula" name="cedula" inputmode="numeric" required>
+        </label>
+      </div>
+      <label for="correo">Correo electrónico <small>Opcional, para enviarte la confirmación</small>
+        <input id="correo" name="correo" type="email" autocomplete="email">
+      </label>
+
+      <fieldset>
+        <legend>¿Podremos contar contigo?</legend>
+        <label class="choice" for="si"><input type="radio" id="si" name="asiste" value="Sí asistiré" checked> Sí, allí estaré para celebrar contigo.</label>
+        <label class="choice" for="no"><input type="radio" id="no" name="asiste" value="No asistiré"> No podré acompañarte, pero te deseo toda la felicidad.</label>
+      </fieldset>
+
+      <div id="bloque-personas" style="display:flex;flex-direction:column;gap:14px">
+        <label for="personas">¿Cuántas personas asistirán con esta invitación? <small>Cuéntate a ti</small>
+          <select id="personas" name="personas"><option value="1">1 persona</option><option value="2">2 personas</option><option value="3">3 personas</option></select>
+        </label>
+        <div id="acompanantes" style="display:flex;flex-direction:column;gap:14px"></div>
+      </div>
+
+      <p class="err" id="err" role="alert"></p>
+      <button class="cta" type="submit" id="enviar">Enviar confirmación</button>
+    </form>
+
+    <div class="thanks" id="gracias" hidden>
+      <p class="big">¡Gracias!</p>
+      <p id="gracias-txt"></p>
+    </div>
+  </section>
+
+  <p class="sign">Te espero, Lauren</p>
+</main>
+
+<script>
+(function(){
+  var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzhfWw8UMXoCao1hgxz-CGXH2BBwySotj6Zj7BqKv_7ud2pdjTzX0j1fYyVtCQm1Iirtg/exec";
+
+  // Cuenta regresiva
+  var target=new Date("2026-12-12T19:00:00-05:00").getTime();
+  function pad(n){return n<10?"0"+n:""+n}
+  function tick(){
+    var s=Math.floor(Math.max(0,target-Date.now())/1000);
+    document.getElementById("d").textContent=Math.floor(s/86400);
+    document.getElementById("h").textContent=pad(Math.floor(s%86400/3600));
+    document.getElementById("m").textContent=pad(Math.floor(s%3600/60));
+    document.getElementById("s").textContent=pad(s%60);
+  }
+  tick();setInterval(tick,1000);
+
+  // Campos de acompañantes según el número de personas
+  var form=document.getElementById("rsvp"), sel=document.getElementById("personas"),
+      cont=document.getElementById("acompanantes"), bloque=document.getElementById("bloque-personas"),
+      err=document.getElementById("err"), btn=document.getElementById("enviar");
+
+  function pintarAcompanantes(){
+    var n=parseInt(sel.value,10)-1, viejos={};
+    cont.querySelectorAll("input").forEach(function(i){viejos[i.id]=i.value});
+    cont.innerHTML="";
+    for(var i=1;i<=n;i++){
+      var d=document.createElement("div");d.className="guest";
+      d.innerHTML='<h3>Acompañante '+i+'</h3><div class="row">'+
+        '<label for="acomp_nombre_'+i+'">Nombre completo<input id="acomp_nombre_'+i+'" required></label>'+
+        '<label for="acomp_cedula_'+i+'">Cédula<input id="acomp_cedula_'+i+'" inputmode="numeric" required></label></div>';
+      cont.appendChild(d);
+    }
+    cont.querySelectorAll("input").forEach(function(i){if(viejos[i.id])i.value=viejos[i.id]});
+  }
+  function asiste(){return document.getElementById("si").checked}
+  function actualizar(){bloque.style.display=asiste()?"flex":"none"}
+  sel.addEventListener("change",pintarAcompanantes);
+  document.getElementById("si").addEventListener("change",actualizar);
+  document.getElementById("no").addEventListener("change",actualizar);
+  pintarAcompanantes();actualizar();
+
+  form.addEventListener("submit",function(e){
+    e.preventDefault();err.textContent="";
+    var nombre=form.nombre.value.trim(), cedula=form.cedula.value.trim(), correo=form.correo.value.trim();
+    if(!nombre||!cedula){err.textContent="Escribe tu nombre completo y tu cédula.";return}
+    if(correo && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(correo)){err.textContent="Revisa el correo electrónico, parece incompleto.";return}
+
+    var lista=[];
+    if(asiste()){
+      var n=parseInt(sel.value,10)-1;
+      for(var i=1;i<=n;i++){
+        var an=document.getElementById("acomp_nombre_"+i).value.trim(),
+            ac=document.getElementById("acomp_cedula_"+i).value.trim();
+        if(!an||!ac){err.textContent="Completa el nombre y la cédula del acompañante "+i+".";return}
+        lista.push(an+" (C.C. "+ac+")");
+      }
+    }
+    if(!SCRIPT_URL){err.textContent="El formulario aún no está conectado. Avísale a la familia de Lauren.";return}
+
+    var datos=new URLSearchParams();
+    datos.append("nombre",nombre);datos.append("cedula",cedula);datos.append("correo",correo);
+    datos.append("asiste",asiste()?"Sí asistiré":"No asistiré");
+    datos.append("personas",asiste()?sel.value:"0");
+    datos.append("acompanantes",lista.join("\n"));
+
+    btn.disabled=true;btn.textContent="Enviando…";
+    fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",body:datos})
+      .then(function(){
+        form.hidden=true;
+        document.getElementById("gracias-txt").textContent= asiste()
+          ? "Tu confirmación quedó registrada. ¡Nos vemos en la fiesta!"
+          : "Gracias por avisarnos. Te vamos a extrañar.";
+        document.getElementById("gracias").hidden=false;
+      })
+      .catch(function(){
+        err.textContent="No se pudo enviar. Revisa tu conexión a internet e inténtalo de nuevo.";
+        btn.disabled=false;btn.textContent="Enviar confirmación";
+      });
+  });
+})();
+</script>
