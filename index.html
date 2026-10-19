@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>XV de Lauren</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -80,7 +85,22 @@ legend{font-size:18px;font-weight:600;color:var(--blue-deep);padding:0;margin-bo
 .thanks .big{font-family:var(--script);font-size:52px;color:var(--blue);line-height:1}
 .thanks p{font-size:20px}
 form .cta{align-self:center;font-size:clamp(22px,4.5vw,28px);padding:14px 40px}
-@media (prefers-reduced-motion:reduce){.cta{transition:none}html{scroll-behavior:auto}}
+[hidden]{display:none!important}
+input,select{max-width:100%}
+/* Ventana de confirmación enviada */
+.modal{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;
+  background:rgba(31,63,110,.45);padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  animation:fade .25s ease-out}
+.modal-box{background:linear-gradient(var(--paper),var(--paper-2));border:2px solid #fff;border-radius:14px;
+  box-shadow:0 20px 50px rgba(31,63,110,.35);max-width:380px;width:100%;padding:32px 24px 26px;text-align:center;
+  display:flex;flex-direction:column;gap:12px;animation:pop .3s ease-out}
+.check{width:72px;height:72px;margin:0 auto;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center}
+.modal-box .big{font-family:var(--script);font-size:46px;color:var(--blue);line-height:1}
+.modal-box p{font-size:20px}
+.modal-box .cta{font-size:22px;padding:10px 40px;margin-top:6px}
+@keyframes fade{from{opacity:0}}
+@keyframes pop{from{transform:scale(.9);opacity:0}}
+@media (prefers-reduced-motion:reduce){.cta{transition:none}html{scroll-behavior:auto}.modal,.modal-box{animation:none}}
 </style>
 
 <main class="card">
@@ -177,6 +197,17 @@ form .cta{align-self:center;font-size:clamp(22px,4.5vw,28px);padding:14px 40px}
   <p class="sign">Te espero, Lauren</p>
 </main>
 
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo" hidden>
+  <div class="modal-box">
+    <div class="check" aria-hidden="true">
+      <svg width="38" height="38" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <p class="big" id="modal-titulo">¡Confirmación enviada!</p>
+    <p id="modal-txt"></p>
+    <button class="cta" type="button" id="cerrar">Cerrar</button>
+  </div>
+</div>
+
 <script>
 (function(){
   var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzhfWw8UMXoCao1hgxz-CGXH2BBwySotj6Zj7BqKv_7ud2pdjTzX0j1fYyVtCQm1Iirtg/exec";
@@ -218,6 +249,29 @@ form .cta{align-self:center;font-size:clamp(22px,4.5vw,28px);padding:14px 40px}
   document.getElementById("no").addEventListener("change",actualizar);
   pintarAcompanantes();actualizar();
 
+  // Mensaje de éxito: cierra el formulario y muestra la ventana
+  var modal=document.getElementById("modal"), timer;
+  function mostrarGracias(txt){
+    form.hidden=true;
+    document.getElementById("gracias-txt").textContent=txt;
+    document.getElementById("gracias").hidden=false;
+  }
+  function abrirModal(txt){
+    document.getElementById("modal-txt").textContent=txt;
+    modal.hidden=false;document.getElementById("cerrar").focus();
+    timer=setTimeout(cerrarModal,6000);
+  }
+  function cerrarModal(){
+    clearTimeout(timer);modal.hidden=true;
+    document.getElementById("confirmar").scrollIntoView({block:"center"});
+  }
+  document.getElementById("cerrar").addEventListener("click",cerrarModal);
+  modal.addEventListener("click",function(e){if(e.target===modal)cerrarModal()});
+  document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!modal.hidden)cerrarModal()});
+
+  // Si ya confirmó desde este celular, muestra el agradecimiento en vez del formulario
+  try{var previo=localStorage.getItem("xv_confirmado");if(previo)mostrarGracias(previo)}catch(x){}
+
   form.addEventListener("submit",function(e){
     e.preventDefault();err.textContent="";
     var nombre=form.nombre.value.trim(), cedula=form.cedula.value.trim(), correo=form.correo.value.trim();
@@ -245,11 +299,12 @@ form .cta{align-self:center;font-size:clamp(22px,4.5vw,28px);padding:14px 40px}
     btn.disabled=true;btn.textContent="Enviando…";
     fetch(SCRIPT_URL,{method:"POST",mode:"no-cors",body:datos})
       .then(function(){
-        form.hidden=true;
-        document.getElementById("gracias-txt").textContent= asiste()
-          ? "Tu confirmación quedó registrada. ¡Nos vemos en la fiesta!"
+        var txt = asiste()
+          ? "Tu asistencia quedó registrada. ¡Nos vemos en la fiesta!"
           : "Gracias por avisarnos. Te vamos a extrañar.";
-        document.getElementById("gracias").hidden=false;
+        mostrarGracias(txt);
+        try{localStorage.setItem("xv_confirmado",txt)}catch(x){}
+        abrirModal(txt);
       })
       .catch(function(){
         err.textContent="No se pudo enviar. Revisa tu conexión a internet e inténtalo de nuevo.";
@@ -258,3 +313,5 @@ form .cta{align-self:center;font-size:clamp(22px,4.5vw,28px);padding:14px 40px}
   });
 })();
 </script>
+
+</html>
